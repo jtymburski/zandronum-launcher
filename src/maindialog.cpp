@@ -35,6 +35,12 @@ MainDialog::~MainDialog()
  */
 void MainDialog::onLaunchClick()
 {
+  // Start the game
   launch_game.start();
-  close();
+
+  // Delay closure of the app till game start
+  QTimer *timer = new QTimer(this);
+  timer->setSingleShot(true);
+  connect(timer, SIGNAL(timeout()), this, SLOT(close()));
+  timer->start(5000);
 }

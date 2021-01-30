@@ -35,6 +35,12 @@ RESOURCES += \
 macx:RESOURCES += resources-mac.qrc
 win32:RESOURCES += resources-win.qrc
 
+macBinaries.files = $$PWD/resource/executable/mac/Zandronum.app \
+                    $$PWD/resource/executable/doom.wad \
+                    $$files($$PWD/resource/executable/mod.*)
+macBinaries.path = Contents/Resources
+macx:QMAKE_BUNDLE_DATA += macBinaries
+
 # Icons
 
 macx:ICON = icon.icns
