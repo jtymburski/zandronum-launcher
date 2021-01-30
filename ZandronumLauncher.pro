@@ -27,5 +27,15 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES +=
 
+# Resources
+
 RESOURCES += \
   resources.qrc
+
+macx:RESOURCES += resources-mac.qrc
+win32:RESOURCES += resources-win.qrc
+
+# Icons
+
+macx:ICON = icon.icns
+win32:RC_ICONS = icon.ico
