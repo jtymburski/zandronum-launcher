@@ -4,7 +4,9 @@
 #include <QDialog>
 #include <QGridLayout>
 #include <QPushButton>
+#include <QTimer>
 
+#include "config/maclaunchconfig.h"
 #include "launchgame.h"
 
 class MainDialog : public QDialog

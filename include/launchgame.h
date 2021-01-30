@@ -1,10 +1,9 @@
 #ifndef LAUNCHGAME_H
 #define LAUNCHGAME_H
 
-#include <QCoreApplication>
-#include <QFile>
 #include <QProcess>
-#include <QTimer>
+
+#include "config/launchconfig.h"
 
 class LaunchGame
 {
@@ -12,17 +11,9 @@ public:
   LaunchGame();
   ~LaunchGame();
 
-private:
-  /* Resource base directory, relative to the binary */
-  const static QString kRESOURCE_DIRECTORY;
-
-private:
-  /* Returns the base executable directory */
-  QString baseExecutableDir();
-
 public:
   /* Execute and start the game */
-  void start();
+  bool start(const LaunchConfig &launchConfig);
 };
 
 #endif // LAUNCHGAME_H

@@ -1,8 +1,5 @@
 #include "launchgame.h"
 
-/* Constant Implementation - see header file for descriptions */
-const QString LaunchGame::kRESOURCE_DIRECTORY = "/../Resources/";
-
 LaunchGame::LaunchGame()
 {
 }
@@ -11,35 +8,39 @@ LaunchGame::~LaunchGame()
 {
 }
 
-/* Returns the base executable directory */
-QString LaunchGame::baseExecutableDir()
-{
-  return QCoreApplication::applicationDirPath() + kRESOURCE_DIRECTORY;
-}
-
 /* Execute and start the game */
-void LaunchGame::start()
+bool LaunchGame::start(const LaunchConfig &launchConfig)
 {
-  QString binary = baseExecutableDir() + "Zandronum.app/Contents/MacOS/zandronum";
+  // Check required files that they are configured
+  if(!launchConfig.isZandronumBinaryValid())
+  {
+    qWarning("Zandronum filepath is not valid");
+    return false;
+  }
+  else if(!launchConfig.isDoomBinaryValid())
+  {
+    qWarning("Doom WAD filepath is not valid");
+    return false;
+  }
 
+  // Proceed with setting up the process
   QStringList arguments;
 
   arguments.append("-iwad");
-  arguments.append(baseExecutableDir() + "doom.wad");
+  arguments.append(launchConfig.getDoomBinaryFilepath());
 
-  QFile mod_pk3(baseExecutableDir() + "mod.pk3");
-  if(mod_pk3.exists())
+  if(launchConfig.isModBinaryValid())
   {
     arguments.append("-file");
-    arguments.append(mod_pk3.fileName());
+    arguments.append(launchConfig.getModBinaryFilepath());
   }
 
-  QFile mod_config(baseExecutableDir() + "mod.ini");
-  if(mod_config.exists())
+  if(launchConfig.isModConfigValid())
   {
     arguments.append("-config");
-    arguments.append(mod_config.fileName());
+    arguments.append(launchConfig.getModConfigFilepath());
   }
 
-  QProcess::startDetached(binary, arguments);
+  QProcess::startDetached(launchConfig.getZandronumBinaryFilepath(), arguments);
+  return true;
 }

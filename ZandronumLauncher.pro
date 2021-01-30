@@ -9,11 +9,15 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/config/launchconfig.cpp \
+    src/config/maclaunchconfig.cpp \
     src/launchgame.cpp \
     src/main.cpp \
     src/maindialog.cpp
 
 HEADERS += \
+    include/config/launchconfig.h \
+    include/config/maclaunchconfig.h \
     include/launchgame.h \
     include/maindialog.h
 

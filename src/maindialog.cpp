@@ -35,12 +35,22 @@ MainDialog::~MainDialog()
  */
 void MainDialog::onLaunchClick()
 {
-  // Start the game
-  launch_game.start();
+  // Configure the game, based on the platform
+  LaunchConfig* launch_config;
+#ifdef __APPLE__
+  launch_config = new MacLaunchConfig();
+#endif
 
-  // Delay closure of the app till game start
-  QTimer *timer = new QTimer(this);
-  timer->setSingleShot(true);
-  connect(timer, SIGNAL(timeout()), this, SLOT(close()));
-  timer->start(5000);
+  // Start the game
+  bool success = launch_game.start(*launch_config);
+  if(success)
+  {
+    // Delay closure of the app till game start
+    QTimer *timer = new QTimer(this);
+    timer->setSingleShot(true);
+    connect(timer, SIGNAL(timeout()), this, SLOT(close()));
+    timer->start(5000);
+  }
+
+  delete launch_config;
 }
