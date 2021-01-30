@@ -2,6 +2,10 @@
 #define MAINDIALOG_H
 
 #include <QDialog>
+#include <QGridLayout>
+#include <QPushButton>
+
+#include "launchgame.h"
 
 class MainDialog : public QDialog
 {
@@ -10,5 +14,16 @@ class MainDialog : public QDialog
 public:
   MainDialog(QWidget *parent = nullptr);
   ~MainDialog();
+
+private:
+  /* Launcher implementation */
+  LaunchGame launch_game;
+
+  /* Background image resource path */
+  const static QString kBACKGROUND_PATH;
+
+private slots:
+  /* Launch button click */
+  void onLaunchClick();
 };
 #endif // MAINDIALOG_H
