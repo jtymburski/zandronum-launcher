@@ -37,7 +37,9 @@ void MainDialog::onLaunchClick()
 {
   // Configure the game, based on the platform
   LaunchConfig* launch_config;
-#ifdef __APPLE__
+#ifdef _WIN32
+  launch_config = new WinLaunchConfig();
+#elif __APPLE__
   launch_config = new MacLaunchConfig();
 #endif
 

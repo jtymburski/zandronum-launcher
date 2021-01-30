@@ -7,6 +7,7 @@
 #include <QTimer>
 
 #include "config/maclaunchconfig.h"
+#include "config/winlaunchconfig.h"
 #include "launchgame.h"
 
 class MainDialog : public QDialog
