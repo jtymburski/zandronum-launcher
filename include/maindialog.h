@@ -25,8 +25,18 @@ private:
   /* Background image resource path */
   const static QString kBACKGROUND_PATH;
 
+private:
+  /* Create base config */
+  LaunchConfig* createLaunchConfig();
+
 private slots:
+  /* Client button click */
+  void onClientClick();
+
   /* Launch button click */
   void onLaunchClick();
+
+  /* Server button click */
+  void onServerClick();
 };
 #endif // MAINDIALOG_H

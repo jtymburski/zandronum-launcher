@@ -11,9 +11,32 @@ public:
   LaunchGame();
   ~LaunchGame();
 
+private:
+  /* Internal process, for last launched client, if it wasn't detached */
+  QProcess *process;
+
+private:
+  /* Set up standard arguments */
+  QStringList createStandardArguments(const LaunchConfig &launch_config);
+
+  /* Check if the config is valid and can be used */
+  bool isValidConfig(const LaunchConfig &launch_config);
+
+  /* Start the process */
+  bool startProcess(const LaunchConfig &launch_config, const QStringList &arguments, bool detached);
+
 public:
-  /* Execute and start the game */
-  bool start(const LaunchConfig &launchConfig);
+  /* Execute and start the game, in normal start-up mode */
+  bool start(const LaunchConfig &launch_config, bool detached = false);
+
+  /* Execute and start a multiplayer client */
+  bool startClient(const LaunchConfig &launch_config, bool detached = false);
+
+  /* Execute and start a multiplayer server */
+  bool startServer(const LaunchConfig &launch_config, bool detached = false);
+
+  /* Stop any embedded process */
+  bool stop();
 };
 
 #endif // LAUNCHGAME_H
