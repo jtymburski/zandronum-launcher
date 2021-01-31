@@ -13,7 +13,7 @@ public:
 
 private:
   /* Internal process, for last launched client, if it wasn't detached */
-  QProcess *process;
+  QProcess *process = nullptr;
 
 private:
   /* Set up standard arguments */
@@ -26,6 +26,9 @@ private:
   bool startProcess(const LaunchConfig &launch_config, const QStringList &arguments, bool detached);
 
 public:
+  /* Checks if the process exists, has been created and is being managed by this launcher */
+  bool isProcessCreated();
+
   /* Execute and start the game, in normal start-up mode */
   bool start(const LaunchConfig &launch_config, bool detached = false);
 

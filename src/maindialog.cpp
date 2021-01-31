@@ -12,22 +12,24 @@ MainDialog::MainDialog(QWidget *parent)
   // Fix the window size to the background
   QImage background_image(kBACKGROUND_PATH);
   setFixedSize(background_image.width(), background_image.height());
-  setStyleSheet("QDialog {background-image: url(" + kBACKGROUND_PATH + ");}");
+  setObjectName("mainDialog");
+  setStyleSheet("QDialog#mainDialog {background-image: url(" + kBACKGROUND_PATH + ");}");
 
   QGridLayout* layout = new QGridLayout(this);
   layout->setRowStretch(0, 1);
   layout->setColumnStretch(0, 1);
   layout->setMargin(25);
 
-  QVBoxLayout* button_layout = new QVBoxLayout(this);
+  QVBoxLayout* button_layout = new QVBoxLayout();
+
+  // Server label
+  server_addr_label = new QLabel("", this);
+  server_addr_label->setAlignment(Qt::AlignCenter);
+  server_addr_label->setStyleSheet("QLabel { font-size: 15px; font-weight: bold; color : green; }");
+  button_layout->addWidget(server_addr_label);
 
   // Launch button configuration
-  QPushButton* launch_button = new QPushButton("Launch Game", this);
-  launch_button->setFocusPolicy(Qt::FocusPolicy::NoFocus);
-  connect(launch_button, SIGNAL(clicked()), this, SLOT(onLaunchClick()));
-  button_layout->addWidget(launch_button);
-
-  QPushButton* server_button = new QPushButton("Host Server", this);
+  server_button = new QPushButton("Host Server", this);
   server_button->setFocusPolicy(Qt::FocusPolicy::NoFocus);
   connect(server_button, SIGNAL(clicked()), this, SLOT(onServerClick()));
   button_layout->addWidget(server_button);
@@ -36,6 +38,11 @@ MainDialog::MainDialog(QWidget *parent)
   client_button->setFocusPolicy(Qt::FocusPolicy::NoFocus);
   connect(client_button, SIGNAL(clicked()), this, SLOT(onClientClick()));
   button_layout->addWidget(client_button);
+
+  QPushButton* launch_button = new QPushButton("Launch Game", this);
+  launch_button->setFocusPolicy(Qt::FocusPolicy::NoFocus);
+  connect(launch_button, SIGNAL(clicked()), this, SLOT(onLaunchClick()));
+  button_layout->addWidget(launch_button);
 
   layout->addLayout(button_layout, 1, 1);
 }
@@ -68,9 +75,17 @@ void MainDialog::onClientClick()
   LaunchConfig* launch_config = createLaunchConfig();
 
   // TODO: Fetch from dialog
-  launch_config->setServerAddress("127.0.0.1");
+  bool ok;
+  QString addr = QInputDialog::getText(this, tr("Server Address"),
+                                       tr("Running server IP address:"), QLineEdit::Normal,
+                                       "127.0.0.1", &ok);
+  if(ok && !addr.isEmpty())
+  {
+    launch_config->setServerAddress(addr);
+    launch_game.startClient(*launch_config, true);
+  }
 
-  launch_game.startClient(*launch_config, true);
+  delete launch_config;
 }
 
 /**
@@ -82,10 +97,9 @@ void MainDialog::onLaunchClick()
 
   // Start the game
   bool success = launch_game.start(*launch_config, true);
-  if(success)
+  if(success && !launch_game.isProcessCreated())
   {
     // Delay closure of the app till game start
-    // TODO: This should only shutdown if a server is not running
     QTimer *timer = new QTimer(this);
     timer->setSingleShot(true);
     connect(timer, SIGNAL(timeout()), this, SLOT(close()));
@@ -100,8 +114,31 @@ void MainDialog::onLaunchClick()
  */
 void MainDialog::onServerClick()
 {
-  LaunchConfig* launch_config = createLaunchConfig();
-  launch_config->setServerConnectionLimit(2);
+  // TODO: Swap to use process slots for both updating the status text and state mgmt
+  if(launch_game.isProcessCreated())
+  {
+    launch_game.stop();
+    server_addr_label->setText(QString());
+    server_button->setText("Host Server");
+  }
+  else
+  {
+    LaunchConfig* launch_config = createLaunchConfig();
+    launch_config->setServerConnectionLimit(2);
 
-  launch_game.startServer(*launch_config);
+    QString local_address = network_info.localAddress();
+    qInfo() << "[INFO] Starting server at address:" << local_address;
+
+    if(launch_game.startServer(*launch_config))
+    {
+      server_addr_label->setText(local_address);
+      server_button->setText("Stop Server");
+    }
+    else
+    {
+      qWarning() << "Failed to start the server";
+    }
+
+    delete launch_config;
+  }
 }

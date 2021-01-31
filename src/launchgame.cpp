@@ -71,6 +71,17 @@ bool LaunchGame::startProcess(const LaunchConfig &launch_config, const QStringLi
   return false;
 }
 
+/* ---- PUBLIC FUNCTIONS ---- */
+
+/**
+ * Checks if the process exists, has been created and is being managed by this launcher.
+ */
+bool LaunchGame::isProcessCreated()
+{
+  // TODO: Replace with better current state definition
+  return process != nullptr;
+}
+
 /**
  * Execute and start the game.
  */

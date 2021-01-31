@@ -3,12 +3,15 @@
 
 #include <QDialog>
 #include <QGridLayout>
+#include <QInputDialog>
+#include <QLabel>
 #include <QPushButton>
 #include <QTimer>
 
 #include "config/maclaunchconfig.h"
 #include "config/winlaunchconfig.h"
 #include "launchgame.h"
+#include "network/networkinfo.h"
 
 class MainDialog : public QDialog
 {
@@ -21,6 +24,13 @@ public:
 private:
   /* Launcher implementation */
   LaunchGame launch_game;
+
+  /* Network info access implementation */
+  NetworkInfo network_info;
+
+  /* Server widgets */
+  QLabel* server_addr_label;
+  QPushButton* server_button;
 
   /* Background image resource path */
   const static QString kBACKGROUND_PATH;

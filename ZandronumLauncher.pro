@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,14 +14,16 @@ SOURCES += \
     src/config/winlaunchconfig.cpp \
     src/launchgame.cpp \
     src/main.cpp \
-    src/maindialog.cpp
+    src/maindialog.cpp \
+    src/network/networkinfo.cpp
 
 HEADERS += \
     include/config/launchconfig.h \
     include/config/maclaunchconfig.h \
     include/config/winlaunchconfig.h \
     include/launchgame.h \
-    include/maindialog.h
+    include/maindialog.h \
+    include/network/networkinfo.h
 
 INCLUDEPATH += \
     include
