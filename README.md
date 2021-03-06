@@ -10,21 +10,33 @@ It tries to remove the complexities of the command line and more easily support 
 
 ### Prerequisites
 
-Download and install [QT 5.12](https://www.qt.io/offline-installers). Required to modify and build the launcher.
+Download and install [QT 5.15](https://www.qt.io/download-open-source) using the online installer. Make sure to use MinGW 64 bit build of QT.
+
+This is required to modify and build the launcher.
 
 ### Installing & Making Changes
 
-* Import the cloned project into QT Creator
-* Change out key assets to represent your mod:
+1. Import the cloned project into QT Creator
+1. Change out key assets to represent your mod:
    * resource/background.png : Main dialog background
    * resource/executable/mod.pk3 : Compiled mod (currently only supports single PK3)
    * resource/executable/mod.ini : Custom mod configuration
-* Build and run
+1. Build and run
+
+### Deployment
+
+#### Windows
+
+1. Build in QT Creator, using the above process
+1. Copy the `ZandronumLauncher.exe` from debug build folder used by QT to a new empty deployment folder
+1. Copy everything from `resource/executable/generic` and `resource/executable/win` to the same new folder. Do not include the sub-directories, just the content files.
+1. Run the QT deployment executable, to pull in all the DLLs. Make sure to change based on your QT build and MinGW build.
+   * Example: `PATH=$PATH:/c/Qt/Tools/mingw810_64/bin/ /c/Qt/5.15.2/mingw81_64/bin/windeployqt.exe --debug ZandronumLauncher.exe`
 
 ## Built With
 
-* [Zandronum](https://zandronum.com/) - Multiplayer oriented DOOM port, based off Skulltag, for Doom and Doom II
-* [FreeDOOM](https://freedoom.github.io/) - Free build of DOOM engine assets, compatible as WAD of base game
+* [Zandronum](https://zandronum.com/) - Multiplayer oriented Doom port, based off Skulltag, for Doom and Doom II
+* [Freedoom](https://freedoom.github.io/) - Free build of Doom engine assets, compatible as IWAD of base game
 
 ## Authors
 
@@ -36,4 +48,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-* **Jesze Kaszas** - Game Developer of [Many.](http://simulacruminteractive.ca/) [Different.](https://forestbear.net/) [Projects.](https://www.youtube.com/user/OZetsuiO/)
+* **Jesze Kaszas** - Artistic Visionary of [Many.](http://simulacruminteractive.ca/) [Different.](https://forestbear.net/) [Projects.](https://www.youtube.com/user/OZetsuiO/)
+   * This launcher was created for one of his oldest projects, [Halodoom](https://forestbear.net/projects/halodoom/)
