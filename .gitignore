@@ -72,4 +72,4 @@ Thumbs.db
 *.exe
 
 # Project specific exclusions
-resource/executable/mod.*
+resource/executable/*

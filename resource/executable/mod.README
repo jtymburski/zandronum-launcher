@@ -1,7 +1,0 @@
-In order to launch custom mods with Zandronum, place two
-files here:
-
-mod.ini
-mod.pk3
-
-They should be named exactly as above and dropped beside this README

@@ -1,7 +1,7 @@
 #include "config/launchconfig.h"
 
 /* Default file names, used by the default config */
-const QString LaunchConfig::DEFAULT_DOOM_FILENAME = "doom.wad";
+const QString LaunchConfig::DEFAULT_DOOM_FILENAME = "doom2.wad";
 const QString LaunchConfig::DEFAULT_INI_FILENAME = "mod.ini";
 const QString LaunchConfig::DEFAULT_PK3_FILENAME = "mod.pk3";
 
