@@ -7,7 +7,10 @@
 class NetworkInfo
 {
 public:
-  /* Determines the local network address, expected in IPv4 format */
+  /* Returns if the address is a valid IPv4 format */
+  bool isValidAddress(QString address);
+
+  /* Fetches the local network address, expected in IPv4 format */
   QString localAddress();
 };
 

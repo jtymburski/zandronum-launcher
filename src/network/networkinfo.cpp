@@ -1,7 +1,17 @@
 #include "network/networkinfo.h"
 
 /**
- * Determines the local network address, expected in IPv4 format. Today, this only supports
+ * Returns if the address provided is valid and can be parsed. If this returns true,
+ * it is expected that this should be compatible with any network interface.
+ */
+bool NetworkInfo::isValidAddress(QString address)
+{
+  QHostAddress validated_address(address);
+  return !validated_address.isNull();
+}
+
+/**
+ * Fetches the local network address, expected in IPv4 format. Today, this only supports
  * connections through the Ethernet or Wifi adapters on the host machine. VM bridges are
  * unsupported.
  */

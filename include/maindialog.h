@@ -5,6 +5,7 @@
 #include <QGridLayout>
 #include <QInputDialog>
 #include <QLabel>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QTimer>
 
@@ -22,6 +23,9 @@ public:
   ~MainDialog();
 
 private:
+  /* Last or current IP address the client is using for the remote server */
+  QString client_server_addr = "127.0.0.1";
+
   /* Launcher implementation */
   LaunchGame launch_game;
 

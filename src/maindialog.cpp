@@ -74,15 +74,22 @@ void MainDialog::onClientClick()
 {
   LaunchConfig* launch_config = createLaunchConfig();
 
-  // TODO: Fetch from dialog
   bool ok;
   QString addr = QInputDialog::getText(this, tr("Server Address"),
-                                       tr("Running server IP address:"), QLineEdit::Normal,
-                                       "127.0.0.1", &ok);
-  if(ok && !addr.isEmpty())
+                                       tr("Running server IP address?"), QLineEdit::Normal,
+                                       client_server_addr, &ok,
+                                       Qt::WindowSystemMenuHint | Qt::WindowTitleHint);
+  bool valid_addr = network_info.isValidAddress(addr);
+  if(ok && !addr.isEmpty() && valid_addr)
   {
+    client_server_addr = addr;
     launch_config->setServerAddress(addr);
     launch_game.startClient(*launch_config, true);
+  }
+  else if(!valid_addr)
+  {
+    QMessageBox::warning(this, tr("Bad Address"),
+                         tr("'%1' is an invalid server address").arg(addr));
   }
 
   delete launch_config;
