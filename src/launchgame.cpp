@@ -10,65 +10,38 @@ LaunchGame::~LaunchGame()
 }
 
 /**
- * Set up standard arguments.
+ * Convert the list of arguments into a process compatible string list. For example, add "-"
+ * to the prefix of each argument.
  */
-QStringList LaunchGame::createStandardArguments(const LaunchConfig &launch_config)
-{
-  QStringList arguments;
+QStringList LaunchGame::argumentsToStringList(const QList<Argument> &arguments) const {
+  QStringList argumentStringList;
 
-  arguments.append("-iwad");
-  arguments.append(launch_config.getDoomBinaryFilepath());
-
-  if(launch_config.isModBinaryValid())
+  for(Argument arg : arguments)
   {
-    arguments.append("-file");
-    arguments.append(launch_config.getModBinaryFilepath());
+    argumentStringList.append("-" + arg.getKey());
+    argumentStringList.append(arg.getValue());
   }
 
-  if(launch_config.isModConfigValid())
-  {
-    arguments.append("-config");
-    arguments.append(launch_config.getModConfigFilepath());
-  }
-
-  return arguments;
-}
-
-/**
- * Check if the config is valid and can be used.
- */
-bool LaunchGame::isValidConfig(const LaunchConfig &launch_config)
-{
-  if(!launch_config.isZandronumBinaryValid())
-  {
-    qWarning("Zandronum filepath is not valid");
-    return false;
-  }
-  else if(!launch_config.isDoomBinaryValid())
-  {
-    qWarning("Doom WAD filepath is not valid");
-    return false;
-  }
-  return true;
+  return argumentStringList;
 }
 
 /**
  * Start the process.
  */
-bool LaunchGame::startProcess(const LaunchConfig &launch_config, const QStringList &arguments,
+void LaunchGame::startProcess(const LaunchConfig &launch_config, const QList<Argument> &arguments,
                               bool detached)
 {
+  QStringList argumentStringList = argumentsToStringList(arguments);
   if(detached)
   {
-    return QProcess::startDetached(launch_config.getZandronumBinaryFilepath(), arguments);
+    if(!QProcess::startDetached(launch_config.getZandronumBinaryFilepath(), argumentStringList))
+      throw std::runtime_error("Game process failed to detach and start");
   }
   else if(stop())
   {
     process = new QProcess();
-    process->start(launch_config.getZandronumBinaryFilepath(), arguments);
-    return true;
+    process->start(launch_config.getZandronumBinaryFilepath(), argumentStringList);
   }
-  return false;
 }
 
 /* ---- PUBLIC FUNCTIONS ---- */
@@ -84,57 +57,29 @@ bool LaunchGame::isProcessCreated()
 
 /**
  * Execute and start the game.
+ * @throws std::invalid_parameter if the launch config is misconfigured
  */
-bool LaunchGame::start(const LaunchConfig &launch_config, bool detached)
+void LaunchGame::start(const LaunchConfig &launch_config, bool detached)
 {
-  if(!isValidConfig(launch_config))
-    return false;
-
-  QStringList arguments = createStandardArguments(launch_config);
-
-  return startProcess(launch_config, arguments, detached);
+  startProcess(launch_config, launch_config.getOfflineArguments(), detached);
 }
 
 /**
  * Execute and start a multiplayer client.
+ * @throws std::invalid_parameter if the launch config is misconfigured
  */
-bool LaunchGame::startClient(const LaunchConfig &launch_config, bool detached)
+void LaunchGame::startClient(const LaunchConfig &launch_config, bool detached)
 {
-  if(!isValidConfig(launch_config))
-    return false;
-  else if(!launch_config.isServerAddressSet())
-  {
-    qWarning("Server address is not set but required for client connection");
-    return false;
-  }
-
-  QStringList arguments = createStandardArguments(launch_config);
-
-  arguments.append("-connect");
-  arguments.append(launch_config.getServerAddress());
-
-  return startProcess(launch_config, arguments, detached);
+  startProcess(launch_config, launch_config.getClientArguments(), detached);
 }
 
 /**
  * Execute and start a multiplayer server.
+ * @throws std::invalid_parameter if the launch config is misconfigured
  */
-bool LaunchGame::startServer(const LaunchConfig &launch_config, bool detached)
+void LaunchGame::startServer(const LaunchConfig &launch_config, bool detached)
 {
-  if(!isValidConfig(launch_config))
-    return false;
-  else if(!launch_config.isServerConnectionLimitSet())
-  {
-    qWarning("Server connection limit is not set");
-    return false;
-  }
-
-  QStringList arguments = createStandardArguments(launch_config);
-
-  arguments.append("-host");
-  arguments.append(QString::number(launch_config.getServerConnectionLimit()));
-
-  return startProcess(launch_config, arguments, detached);
+  startProcess(launch_config, launch_config.getServerArguments(), detached);
 }
 
 /**

@@ -8,17 +8,21 @@ SOURCES += \
     src/config/launchconfig.cpp \
     src/config/maclaunchconfig.cpp \
     src/config/winlaunchconfig.cpp \
+    src/file/filereader.cpp \
     src/launchgame.cpp \
     src/main.cpp \
     src/maindialog.cpp \
+    src/model/argument.cpp \
     src/network/networkinfo.cpp
 
 HEADERS += \
     include/config/launchconfig.h \
     include/config/maclaunchconfig.h \
     include/config/winlaunchconfig.h \
+    include/file/filereader.h \
     include/launchgame.h \
     include/maindialog.h \
+    include/model/argument.h \
     include/network/networkinfo.h
 
 INCLUDEPATH += \

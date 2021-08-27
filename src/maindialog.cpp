@@ -84,7 +84,15 @@ void MainDialog::onClientClick()
   {
     client_server_addr = addr;
     launch_config->setServerAddress(addr);
-    launch_game.startClient(*launch_config, true);
+
+    try
+    {
+      launch_game.startClient(*launch_config, true);
+    }
+    catch (const std::exception& e)
+    {
+      QMessageBox::warning(this, tr("Failed To Start"), tr(e.what()));
+    }
   }
   else if(!valid_addr)
   {
@@ -103,8 +111,19 @@ void MainDialog::onLaunchClick()
   LaunchConfig* launch_config = createLaunchConfig();
 
   // Start the game
-  bool success = launch_game.start(*launch_config, true);
-  if(success && !launch_game.isProcessCreated())
+  bool started = false;
+  try
+  {
+    launch_game.start(*launch_config, true);
+    started = true;
+  }
+  catch (const std::exception& e)
+  {
+    QMessageBox::warning(this, tr("Failed To Start"), tr(e.what()));
+  }
+
+  // Check the status
+  if(started && !launch_game.isProcessCreated())
   {
     // Delay closure of the app till game start
     QTimer *timer = new QTimer(this);
@@ -136,14 +155,23 @@ void MainDialog::onServerClick()
     QString local_address = network_info.localAddress();
     qInfo() << "[INFO] Starting server at address:" << local_address;
 
-    if(launch_game.startServer(*launch_config))
+    // Start the server
+    bool started = false;
+    try
+    {
+      launch_game.startServer(*launch_config);
+      started = true;
+    }
+    catch (const std::exception& e)
+    {
+      QMessageBox::warning(this, tr("Failed To Start"), tr(e.what()));
+    }
+
+    // Check the status
+    if(started)
     {
       server_addr_label->setText(local_address);
       server_button->setText("Stop Server");
-    }
-    else
-    {
-      qWarning() << "Failed to start the server";
     }
 
     delete launch_config;

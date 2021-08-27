@@ -16,27 +16,25 @@ private:
   QProcess *process = nullptr;
 
 private:
-  /* Set up standard arguments */
-  QStringList createStandardArguments(const LaunchConfig &launch_config);
-
-  /* Check if the config is valid and can be used */
-  bool isValidConfig(const LaunchConfig &launch_config);
+  /* Convert the list of arguments into a process compatible string list */
+  QStringList argumentsToStringList(const QList<Argument> &arguments) const;
 
   /* Start the process */
-  bool startProcess(const LaunchConfig &launch_config, const QStringList &arguments, bool detached);
+  void startProcess(const LaunchConfig &launch_config, const QList<Argument> &arguments,
+                    bool detached);
 
 public:
   /* Checks if the process exists, has been created and is being managed by this launcher */
   bool isProcessCreated();
 
   /* Execute and start the game, in normal start-up mode */
-  bool start(const LaunchConfig &launch_config, bool detached = false);
+  void start(const LaunchConfig &launch_config, bool detached = false);
 
   /* Execute and start a multiplayer client */
-  bool startClient(const LaunchConfig &launch_config, bool detached = false);
+  void startClient(const LaunchConfig &launch_config, bool detached = false);
 
   /* Execute and start a multiplayer server */
-  bool startServer(const LaunchConfig &launch_config, bool detached = false);
+  void startServer(const LaunchConfig &launch_config, bool detached = false);
 
   /* Stop any embedded process */
   bool stop();
