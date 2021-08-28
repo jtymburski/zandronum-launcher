@@ -1,4 +1,4 @@
-#include "maindialog.h"
+#include "ui/maindialog.h"
 
 /* Constant Implementation - see header file for descriptions */
 const QString MainDialog::kBACKGROUND_PATH = ":/resource/background.png";

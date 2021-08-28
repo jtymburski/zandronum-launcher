@@ -1,4 +1,4 @@
-#include "config/maclaunchconfig.h"
+#include "game/config/maclaunchconfig.h"
 
 /* Destructor function */
 MacLaunchConfig::~MacLaunchConfig()

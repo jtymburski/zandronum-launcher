@@ -9,9 +9,9 @@
 #include <QPushButton>
 #include <QTimer>
 
-#include "config/maclaunchconfig.h"
-#include "config/winlaunchconfig.h"
-#include "launchgame.h"
+#include "game/config/maclaunchconfig.h"
+#include "game/config/winlaunchconfig.h"
+#include "game/launchgame.h"
 #include "network/networkinfo.h"
 
 class MainDialog : public QDialog

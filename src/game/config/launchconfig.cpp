@@ -1,4 +1,4 @@
-#include "config/launchconfig.h"
+#include "game/config/launchconfig.h"
 
 /* Default file names, used by the default config */
 const QString LaunchConfig::DEFAULT_DOOM_FILENAME = QStringLiteral("doom2.wad");

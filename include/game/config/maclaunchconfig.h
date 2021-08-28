@@ -1,16 +1,15 @@
-#ifndef WINLAUNCHCONFIG_H
-#define WINLAUNCHCONFIG_H
+#ifndef MACLAUNCHCONFIG_H
+#define MACLAUNCHCONFIG_H
 
 #include <QCoreApplication>
-#include <QDir>
 
-#include "config/launchconfig.h"
+#include "game/config/launchconfig.h"
 
-class WinLaunchConfig : public LaunchConfig
+class MacLaunchConfig : public LaunchConfig
 {
 public:
   /* Destructor function */
-  ~WinLaunchConfig() override;
+  ~MacLaunchConfig() override;
 
 private:
   /* Returns the base executable directory */
@@ -21,4 +20,4 @@ public:
   QString getZandronumBinaryFilepath() const override;
 };
 
-#endif // WINLAUNCHCONFIG_H
+#endif // MACLAUNCHCONFIG_H

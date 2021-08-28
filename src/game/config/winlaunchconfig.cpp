@@ -1,4 +1,4 @@
-#include "config/winlaunchconfig.h"
+#include "game/config/winlaunchconfig.h"
 
 /* Destructor function */
 WinLaunchConfig::~WinLaunchConfig()

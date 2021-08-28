@@ -3,7 +3,7 @@
 
 #include <QProcess>
 
-#include "config/launchconfig.h"
+#include "game/config/launchconfig.h"
 
 class LaunchGame
 {

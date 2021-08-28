@@ -1,4 +1,4 @@
-#include "launchgame.h"
+#include "game/launchgame.h"
 
 LaunchGame::LaunchGame()
 {

@@ -5,25 +5,25 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++11 file_copies
 
 SOURCES += \
-    src/config/launchconfig.cpp \
-    src/config/maclaunchconfig.cpp \
-    src/config/winlaunchconfig.cpp \
     src/file/filereader.cpp \
-    src/launchgame.cpp \
+    src/game/config/launchconfig.cpp \
+    src/game/config/maclaunchconfig.cpp \
+    src/game/config/winlaunchconfig.cpp \
+    src/game/launchgame.cpp \
     src/main.cpp \
-    src/maindialog.cpp \
     src/model/argument.cpp \
-    src/network/networkinfo.cpp
+    src/network/networkinfo.cpp \
+    src/ui/maindialog.cpp
 
 HEADERS += \
-    include/config/launchconfig.h \
-    include/config/maclaunchconfig.h \
-    include/config/winlaunchconfig.h \
     include/file/filereader.h \
-    include/launchgame.h \
-    include/maindialog.h \
+    include/game/config/launchconfig.h \
+    include/game/config/maclaunchconfig.h \
+    include/game/config/winlaunchconfig.h \
+    include/game/launchgame.h \
     include/model/argument.h \
-    include/network/networkinfo.h
+    include/network/networkinfo.h \
+    include/ui/maindialog.h
 
 INCLUDEPATH += \
     include
