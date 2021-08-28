@@ -150,6 +150,8 @@ void MainDialog::onServerClick()
   else
   {
     LaunchConfig* launch_config = createLaunchConfig();
+    launch_config->insertServerArgument(Argument("-deathmatch", ""));
+    launch_config->insertServerArgument(Argument("+addmap", "MULTI06"));
 
     QString local_address = network_info.localAddress();
     qInfo() << "[INFO] Starting server at address:" << local_address;

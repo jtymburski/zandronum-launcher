@@ -7,6 +7,13 @@
 #include "model/argument.h"
 
 /**
+ * Blank constructor, with empty key and no values.
+ */
+Argument::Argument()
+{
+}
+
+/**
  * Create the key-value pair for the argument which returns the immutable object.
  * @param key argument key string
  * @param value argument value string

@@ -18,10 +18,11 @@ QStringList LaunchGame::argumentsToStringList(const QList<Argument> &arguments) 
 
   for(auto const &arg : arguments)
   {
-    for(auto const &argVal : arg.getValues())
+    const QList<QString> arg_values = arg.getValues();
+    for(auto const &arg_val : arg_values)
     {
       argumentStringList.append(arg.getKey());
-      argumentStringList.append(argVal);
+      argumentStringList.append(arg_val);
     }
   }
 
@@ -64,7 +65,7 @@ bool LaunchGame::isProcessCreated()
  */
 void LaunchGame::start(const LaunchConfig &launch_config, bool detached)
 {
-  startProcess(launch_config, launch_config.getOfflineArguments(), detached);
+  startProcess(launch_config, launch_config.getBasicArguments(), detached);
 }
 
 /**

@@ -15,6 +15,10 @@ public:
   virtual ~LaunchConfig();
 
 private:
+  /* Custom arguments */
+  QMap<QString, Argument> arguments_client;
+  QMap<QString, Argument> arguments_server;
+
   /* Server network address, for connecting as a client */
   QString server_address;
 
@@ -39,7 +43,7 @@ private:
   virtual QString getBaseExecutableDirectory() const = 0;
 
   /* Returns the base mapping of arguments, common for all game types */
-  QMap<QString, Argument> getArgumentsMap() const;
+  QMap<QString, Argument> getArgumentsMap(const QMap<QString, Argument> &extra_arguments) const;
 
   /* Returns the file reference to the doom WAD implementation */
   QString getDoomBinaryFilepath() const;
@@ -80,17 +84,23 @@ private:
   void validateServerArgumentsOrThrow() const;
 
 public:
+  /* Returns a list of all arguments to start a basic game, straight to the menu */
+  QList<Argument> getBasicArguments() const;
+
   /* Returns a list of all arguments to start a client game */
   QList<Argument> getClientArguments() const;
-
-  /* Returns a list of all arguments to start an offline game */
-  QList<Argument> getOfflineArguments() const;
 
   /* Returns a list of all arguments to start a server */
   QList<Argument> getServerArguments() const;
 
   /* Returns the file reference to the zandronum binary */
   virtual QString getZandronumBinaryFilepath() const = 0;
+
+  /* Insert a client argument to be included when the full list is generated */
+  void insertClientArgument(Argument argument);
+
+  /* Insert a server argument to be included when the full list is generated */
+  void insertServerArgument(Argument argument);
 
   /* Sets the server IPv4 address for connecting as a client */
   void setServerAddress(QString address);

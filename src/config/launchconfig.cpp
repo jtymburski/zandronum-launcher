@@ -1,16 +1,16 @@
 #include "config/launchconfig.h"
 
 /* Default file names, used by the default config */
-const QString LaunchConfig::DEFAULT_DOOM_FILENAME = "doom2.wad";
-const QString LaunchConfig::DEFAULT_INI_FILENAME = "mod.ini";
-const QString LaunchConfig::DEFAULT_PK3_FILENAME = "mod.pk3";
+const QString LaunchConfig::DEFAULT_DOOM_FILENAME = QStringLiteral("doom2.wad");
+const QString LaunchConfig::DEFAULT_INI_FILENAME = QStringLiteral("mod.ini");
+const QString LaunchConfig::DEFAULT_PK3_FILENAME = QStringLiteral("mod.pk3");
 
 /* Parameter names for the config */
-const QString LaunchConfig::PARAM_CONFIG_INI = "-config";
-const QString LaunchConfig::PARAM_CONNECTION_LIMIT = "-host";
-const QString LaunchConfig::PARAM_BASE_WAD = "-iwad";
-const QString LaunchConfig::PARAM_MOD_PK3 = "-file";
-const QString LaunchConfig::PARAM_SERVER_ADDR = "-connect";
+const QString LaunchConfig::PARAM_CONFIG_INI = QStringLiteral("-config");
+const QString LaunchConfig::PARAM_CONNECTION_LIMIT = QStringLiteral("-host");
+const QString LaunchConfig::PARAM_BASE_WAD = QStringLiteral("-iwad");
+const QString LaunchConfig::PARAM_MOD_PK3 = QStringLiteral("-file");
+const QString LaunchConfig::PARAM_SERVER_ADDR = QStringLiteral("-connect");
 
 /* Destructor function */
 LaunchConfig::~LaunchConfig()
@@ -20,11 +20,19 @@ LaunchConfig::~LaunchConfig()
 /**
  * Returns the base mapping of arguments, common for all game types. It will only include
  * valid arguments, if they are optional.
+ * @param extra_arguments extra arguments to add to the final map.
  */
-QMap<QString, Argument> LaunchConfig::getArgumentsMap() const
+QMap<QString, Argument> LaunchConfig::getArgumentsMap(
+    const QMap<QString, Argument> &extra_arguments) const
 {
   QMap<QString, Argument> arguments;
 
+  // Add the extra arguments first, in case it tried to override a required argument
+  const QList<QString> extra_arg_keys = extra_arguments.keys();
+  for(auto const &key : extra_arg_keys)
+    arguments.insert(key, extra_arguments.value(key));
+
+  // Add the hard-coded arguments, like wads and pk3s
   arguments.insert(PARAM_BASE_WAD, Argument(PARAM_BASE_WAD, getDoomBinaryFilepath()));
   if(isModBinaryValid())
     arguments.insert(PARAM_MOD_PK3, Argument(PARAM_MOD_PK3, getModBinaryFilepath()));
@@ -169,26 +177,26 @@ void LaunchConfig::validateServerArgumentsOrThrow() const
 /* ---- PUBLIC FUNCTIONS ---- */
 
 /**
+ * Returns a list of all arguments to start a basic game, straight to the menu.
+ */
+QList<Argument> LaunchConfig::getBasicArguments() const
+{
+  validateArgumentsOrThrow();
+  return getArgumentsMap(QMap<QString, Argument>()).values();
+}
+
+/**
  * Returns a list of all arguments to start a client game.
  */
 QList<Argument> LaunchConfig::getClientArguments() const
 {
   validateClientArgumentsOrThrow();
 
-  QMap<QString, Argument> arguments = getArgumentsMap();
+  QMap<QString, Argument> arguments = getArgumentsMap(arguments_client);
 
   arguments.insert(PARAM_SERVER_ADDR, Argument(PARAM_SERVER_ADDR, getServerAddress()));
 
   return arguments.values();
-}
-
-/**
- * Returns a list of all arguments to start an offline game.
- */
-QList<Argument> LaunchConfig::getOfflineArguments() const
-{
-  validateArgumentsOrThrow();
-  return getArgumentsMap().values();
 }
 
 /**
@@ -198,12 +206,30 @@ QList<Argument> LaunchConfig::getServerArguments() const
 {
   validateServerArgumentsOrThrow();
 
-  QMap<QString, Argument> arguments = getArgumentsMap();
+  QMap<QString, Argument> arguments = getArgumentsMap(arguments_server);
 
   arguments.insert(PARAM_CONNECTION_LIMIT,
                    Argument(PARAM_CONNECTION_LIMIT, QString::number(getServerConnectionLimit())));
 
   return arguments.values();
+}
+
+/**
+ * Insert a client argument to be included when the full client list is generated. This will
+ * override any previous arguments with the same parameter key name.
+ */
+void LaunchConfig::insertClientArgument(Argument argument)
+{
+  arguments_client.insert(argument.getKey(), argument);
+}
+
+/**
+ * Insert a server argument to be included when the full server list is generated. This will
+ * override any previous arguments with the same parameter key name.
+ */
+void LaunchConfig::insertServerArgument(Argument argument)
+{
+  arguments_server.insert(argument.getKey(), argument);
 }
 
 /**

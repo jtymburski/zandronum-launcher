@@ -13,6 +13,9 @@
 class Argument
 {
 public:
+  /* Constructor, blank */
+  Argument();
+
   /* Constructor, with single value */
   Argument(const QString &key, const QString &value);
 
