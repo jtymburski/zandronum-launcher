@@ -6,11 +6,11 @@ const QString LaunchConfig::DEFAULT_INI_FILENAME = "mod.ini";
 const QString LaunchConfig::DEFAULT_PK3_FILENAME = "mod.pk3";
 
 /* Parameter names for the config */
-const QString LaunchConfig::PARAM_CONFIG_INI = "config";
-const QString LaunchConfig::PARAM_CONNECTION_LIMIT = "host";
-const QString LaunchConfig::PARAM_BASE_WAD = "iwad";
-const QString LaunchConfig::PARAM_MOD_PK3 = "file";
-const QString LaunchConfig::PARAM_SERVER_ADDR = "connect";
+const QString LaunchConfig::PARAM_CONFIG_INI = "-config";
+const QString LaunchConfig::PARAM_CONNECTION_LIMIT = "-host";
+const QString LaunchConfig::PARAM_BASE_WAD = "-iwad";
+const QString LaunchConfig::PARAM_MOD_PK3 = "-file";
+const QString LaunchConfig::PARAM_SERVER_ADDR = "-connect";
 
 /* Destructor function */
 LaunchConfig::~LaunchConfig()

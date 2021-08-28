@@ -16,10 +16,13 @@ LaunchGame::~LaunchGame()
 QStringList LaunchGame::argumentsToStringList(const QList<Argument> &arguments) const {
   QStringList argumentStringList;
 
-  for(Argument arg : arguments)
+  for(auto const &arg : arguments)
   {
-    argumentStringList.append("-" + arg.getKey());
-    argumentStringList.append(arg.getValue());
+    for(auto const &argVal : arg.getValues())
+    {
+      argumentStringList.append(arg.getKey());
+      argumentStringList.append(argVal);
+    }
   }
 
   return argumentStringList;

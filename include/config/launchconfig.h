@@ -22,7 +22,7 @@ private:
   uint server_connection_limit = DEFAULT_CONNECTION_LIMIT;
 
   /* Default config settings */
-  const static uint DEFAULT_CONNECTION_LIMIT = 2;
+  const static uint DEFAULT_CONNECTION_LIMIT = 4;
   const static QString DEFAULT_DOOM_FILENAME;
   const static QString DEFAULT_INI_FILENAME;
   const static QString DEFAULT_PK3_FILENAME;

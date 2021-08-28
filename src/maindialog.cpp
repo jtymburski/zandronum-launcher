@@ -150,7 +150,6 @@ void MainDialog::onServerClick()
   else
   {
     LaunchConfig* launch_config = createLaunchConfig();
-    launch_config->setServerConnectionLimit(2);
 
     QString local_address = network_info.localAddress();
     qInfo() << "[INFO] Starting server at address:" << local_address;
