@@ -6,6 +6,7 @@ CONFIG += c++11 file_copies
 
 SOURCES += \
     src/file/filereader.cpp \
+    src/file/jsonargumentparser.cpp \
     src/game/config/launchconfig.cpp \
     src/game/config/maclaunchconfig.cpp \
     src/game/config/winlaunchconfig.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
 
 HEADERS += \
     include/file/filereader.h \
+    include/file/jsonargumentparser.h \
     include/game/config/launchconfig.h \
     include/game/config/maclaunchconfig.h \
     include/game/config/winlaunchconfig.h \
