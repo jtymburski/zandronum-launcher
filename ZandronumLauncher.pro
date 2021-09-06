@@ -7,10 +7,11 @@ CONFIG += c++11 file_copies
 SOURCES += \
     src/file/filereader.cpp \
     src/file/jsonargumentparser.cpp \
+    src/game/argumenttranslator.cpp \
     src/game/config/launchconfig.cpp \
     src/game/config/maclaunchconfig.cpp \
     src/game/config/winlaunchconfig.cpp \
-    src/game/launchgame.cpp \
+    src/game/gamecontroller.cpp \
     src/main.cpp \
     src/model/argument.cpp \
     src/network/networkinfo.cpp \
@@ -19,10 +20,11 @@ SOURCES += \
 HEADERS += \
     include/file/filereader.h \
     include/file/jsonargumentparser.h \
+    include/game/argumenttranslator.h \
     include/game/config/launchconfig.h \
     include/game/config/maclaunchconfig.h \
     include/game/config/winlaunchconfig.h \
-    include/game/launchgame.h \
+    include/game/gamecontroller.h \
     include/model/argument.h \
     include/network/networkinfo.h \
     include/ui/maindialog.h

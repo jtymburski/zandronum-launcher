@@ -52,28 +52,10 @@ MainDialog::~MainDialog()
 }
 
 /**
- * Create base config.
- */
-LaunchConfig* MainDialog::createLaunchConfig()
-{
-  LaunchConfig* launch_config;
-
-#ifdef _WIN32
-  launch_config = new WinLaunchConfig();
-#elif __APPLE__
-  launch_config = new MacLaunchConfig();
-#endif
-
-  return launch_config;
-}
-
-/**
  * Client button click.
  */
 void MainDialog::onClientClick()
 {
-  LaunchConfig* launch_config = createLaunchConfig();
-
   bool ok;
   QString addr = QInputDialog::getText(this, tr("Server Address"),
                                        tr("Running server IP address?"), QLineEdit::Normal,
@@ -83,11 +65,10 @@ void MainDialog::onClientClick()
   if(ok && !addr.isEmpty() && valid_addr)
   {
     client_server_addr = addr;
-    launch_config->setServerAddress(addr);
 
     try
     {
-      launch_game.startClient(*launch_config, true);
+      game_controller.startClient(addr);
     }
     catch (const std::exception& e)
     {
@@ -99,8 +80,6 @@ void MainDialog::onClientClick()
     QMessageBox::warning(this, tr("Bad Address"),
                          tr("'%1' is an invalid server address").arg(addr));
   }
-
-  delete launch_config;
 }
 
 /**
@@ -108,13 +87,11 @@ void MainDialog::onClientClick()
  */
 void MainDialog::onLaunchClick()
 {
-  LaunchConfig* launch_config = createLaunchConfig();
-
   // Start the game
   bool started = false;
   try
   {
-    launch_game.start(*launch_config, true);
+    game_controller.start();
     started = true;
   }
   catch (const std::exception& e)
@@ -122,8 +99,8 @@ void MainDialog::onLaunchClick()
     QMessageBox::warning(this, tr("Failed To Start"), tr(e.what()));
   }
 
-  // Check the status
-  if(started && !launch_game.isProcessCreated())
+  // Delay closure of the launcher as long as there is no attached server running
+  if(started && !game_controller.isServerRunning())
   {
     // Delay closure of the app till game start
     QTimer *timer = new QTimer(this);
@@ -131,8 +108,6 @@ void MainDialog::onLaunchClick()
     connect(timer, SIGNAL(timeout()), this, SLOT(close()));
     timer->start(5000);
   }
-
-  delete launch_config;
 }
 
 /**
@@ -141,18 +116,14 @@ void MainDialog::onLaunchClick()
 void MainDialog::onServerClick()
 {
   // TODO: Swap to use process slots for both updating the status text and state mgmt
-  if(launch_game.isProcessCreated())
+  if(game_controller.isServerRunning())
   {
-    launch_game.stop();
+    game_controller.stopServer();
     server_addr_label->setText(QString());
     server_button->setText("Host Server");
   }
   else
   {
-    LaunchConfig* launch_config = createLaunchConfig();
-    launch_config->insertServerArgument(Argument("-deathmatch", ""));
-    launch_config->insertServerArgument(Argument("+addmap", "MULTI06"));
-
     QString local_address = network_info.localAddress();
     qInfo() << "[INFO] Starting server at address:" << local_address;
 
@@ -160,7 +131,7 @@ void MainDialog::onServerClick()
     bool started = false;
     try
     {
-      launch_game.startServer(*launch_config);
+      game_controller.startServer();
       started = true;
     }
     catch (const std::exception& e)
@@ -174,7 +145,5 @@ void MainDialog::onServerClick()
       server_addr_label->setText(local_address);
       server_button->setText("Stop Server");
     }
-
-    delete launch_config;
   }
 }

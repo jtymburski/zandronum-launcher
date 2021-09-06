@@ -9,9 +9,7 @@
 #include <QPushButton>
 #include <QTimer>
 
-#include "game/config/maclaunchconfig.h"
-#include "game/config/winlaunchconfig.h"
-#include "game/launchgame.h"
+#include "game/gamecontroller.h"
 #include "network/networkinfo.h"
 
 class MainDialog : public QDialog
@@ -26,8 +24,8 @@ private:
   /* Last or current IP address the client is using for the remote server */
   QString client_server_addr = "127.0.0.1";
 
-  /* Launcher implementation */
-  LaunchGame launch_game;
+  /* Game controller */
+  GameController game_controller;
 
   /* Network info access implementation */
   NetworkInfo network_info;
@@ -38,10 +36,6 @@ private:
 
   /* Background image resource path */
   const static QString kBACKGROUND_PATH;
-
-private:
-  /* Create base config */
-  LaunchConfig* createLaunchConfig();
 
 private slots:
   /* Client button click */
