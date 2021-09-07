@@ -33,6 +33,7 @@ private:
   /* Server widgets */
   QLabel* server_addr_label;
   QPushButton* server_button;
+  bool server_running = false;
 
   /* Background image resource path */
   const static QString kBACKGROUND_PATH;

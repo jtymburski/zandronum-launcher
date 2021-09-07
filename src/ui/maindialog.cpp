@@ -116,11 +116,12 @@ void MainDialog::onLaunchClick()
 void MainDialog::onServerClick()
 {
   // TODO: Swap to use process slots for both updating the status text and state mgmt
-  if(game_controller.isServerRunning())
+  if(server_running)
   {
     game_controller.stopServer();
     server_addr_label->setText(QString());
     server_button->setText("Host Server");
+    server_running = false;
   }
   else
   {
@@ -144,6 +145,7 @@ void MainDialog::onServerClick()
     {
       server_addr_label->setText(local_address);
       server_button->setText("Stop Server");
+      server_running = true;
     }
   }
 }
