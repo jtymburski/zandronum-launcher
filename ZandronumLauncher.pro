@@ -44,23 +44,24 @@ DISTFILES +=
 RESOURCES += \
   resources.qrc
 
+appBinaries.files = $$PWD/resource/config.json
 macx {
   ICON = icon.icns
   RESOURCES += resources-mac.qrc
 
-  macBinaries.files = $$PWD/resource/executable/mac/Zandronum.app \
-                      $$files($$PWD/resource/executable/generic/*)
-  macBinaries.path = Contents/Resources
-  QMAKE_BUNDLE_DATA += macBinaries
+  appBinaries.files += $$PWD/resource/executable/mac/Zandronum.app \
+                       $$files($$PWD/resource/executable/generic/*) \
+  appBinaries.path = Contents/Resources
+  QMAKE_BUNDLE_DATA += appBinaries
 }
 
 win32 {
   RC_ICONS = icon.ico
   RESOURCES += resources-win.qrc
 
-  winBinaries.files = $$files($$PWD/resource/executable/win/*) \
-                      $$files($$PWD/resource/executable/generic/*)
-  winBinaries.path = $$OUT_PWD/debug
+  appBinaries.files += $$files($$PWD/resource/executable/win/*) \
+                       $$files($$PWD/resource/executable/generic/*)
+  appBinaries.path = $$OUT_PWD/debug
 
-  COPIES += winBinaries
+  COPIES += appBinaries
 }

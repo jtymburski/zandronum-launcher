@@ -7,6 +7,11 @@
  */
 #include "game/gamecontroller.h"
 
+/* Configuration file properties */
+const QString GameController::CONFIG_CLIENT_OBJECT = QStringLiteral("clientArguments");
+const QString GameController::CONFIG_FILE_NAME = QStringLiteral("config.json");
+const QString GameController::CONFIG_SERVER_OBJECT = QStringLiteral("serverArguments");
+
 /**
  * Destructor function
  */
@@ -85,8 +90,12 @@ void GameController::loadConfig(bool reload)
 #endif
 
     // Add any custom configuration
-    launch_config->insertServerArgument(Argument("-deathmatch", ""));
-    launch_config->insertServerArgument(Argument("+addmap", "MULTI06"));
+    QJsonDocument config_json = FileReader::readFileToJson(
+          launch_config->getBaseExecutableDirectory() + CONFIG_FILE_NAME);
+    launch_config->insertClientArguments(
+          JsonArgumentParser::parseArguments(config_json, CONFIG_CLIENT_OBJECT));
+    launch_config->insertServerArguments(
+          JsonArgumentParser::parseArguments(config_json, CONFIG_SERVER_OBJECT));
   }
 }
 

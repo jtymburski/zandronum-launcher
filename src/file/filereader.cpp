@@ -23,13 +23,17 @@ bool FileReader::isValid(QString path)
  */
 QJsonDocument FileReader::readFileToJson(QString path)
 {
-  QString fileContents = readFileToString(path);
+  QJsonDocument doc;
 
-  QJsonParseError error;
-  QJsonDocument doc = QJsonDocument::fromJson(fileContents.toUtf8(), &error);
-  if(doc.isNull())
-    qWarning() << "[WARNING] Failed to parse config file=" << path
-               << " to json with error=" << error.errorString();
+  QString fileContents = readFileToString(path);
+  if(!fileContents.isEmpty())
+  {
+    QJsonParseError error;
+    doc = QJsonDocument::fromJson(fileContents.toUtf8(), &error);
+    if(doc.isNull())
+      qWarning() << "[WARNING] Failed to parse config file =" << path
+                 << " to json with error =" << error.errorString();
+  }
 
   return doc;
 }
@@ -41,13 +45,19 @@ QJsonDocument FileReader::readFileToJson(QString path)
  */
 QString FileReader::readFileToString(QString path)
 {
-  QFile file(path);
-  if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
-    qWarning() << "[WARNING] Failed to open config file=" << path
-               << " with error=" << file.errorString();
+  QString contents;
 
-  QString contents = file.readAll();
-  file.close();
+  QFile file(path);
+  if(file.open(QIODevice::ReadOnly | QIODevice::Text))
+  {
+    contents = file.readAll();
+    file.close();
+  }
+  else
+  {
+    qWarning() << "[WARNING] Failed to open config file =" << path
+               << " with error =" << file.errorString();
+  }
 
   return contents;
 }

@@ -10,6 +10,8 @@
 
 #include <QProcess>
 
+#include "file/filereader.h"
+#include "file/jsonargumentparser.h"
 #include "game/config/maclaunchconfig.h"
 #include "game/config/winlaunchconfig.h"
 #include "game/argumenttranslator.h"
@@ -30,6 +32,11 @@ private:
 
   /* Internal process, for last launched local server */
   QProcess *server_process = nullptr;
+
+  /* Configuration file properties */
+  const static QString CONFIG_CLIENT_OBJECT;
+  const static QString CONFIG_FILE_NAME;
+  const static QString CONFIG_SERVER_OBJECT;
 
 private:
   /* Delete the currently loaded configuration */

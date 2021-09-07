@@ -39,9 +39,6 @@ private:
   const static QString PARAM_SERVER_ADDR;
 
 private:
-  /* Returns the base executable directory */
-  virtual QString getBaseExecutableDirectory() const = 0;
-
   /* Returns the base mapping of arguments, common for all game types */
   QMap<QString, Argument> getArgumentsMap(const QMap<QString, Argument> &extra_arguments) const;
 
@@ -84,6 +81,9 @@ private:
   void validateServerArgumentsOrThrow() const;
 
 public:
+  /* Returns the base executable directory */
+  virtual QString getBaseExecutableDirectory() const = 0;
+
   /* Returns a list of all arguments to start a basic game, straight to the menu */
   QList<Argument> getBasicArguments() const;
 
@@ -97,10 +97,12 @@ public:
   virtual QString getZandronumBinaryFilepath() const = 0;
 
   /* Insert a client argument to be included when the full list is generated */
-  void insertClientArgument(Argument argument);
+  void insertClientArgument(const Argument &argument);
+  void insertClientArguments(const QList<Argument> &arguments);
 
   /* Insert a server argument to be included when the full list is generated */
-  void insertServerArgument(Argument argument);
+  void insertServerArgument(const Argument &argument);
+  void insertServerArguments(const QList<Argument> &arguments);
 
   /* Sets the server IPv4 address for connecting as a client */
   void setServerAddress(QString address);

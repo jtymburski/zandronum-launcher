@@ -217,19 +217,43 @@ QList<Argument> LaunchConfig::getServerArguments() const
 /**
  * Insert a client argument to be included when the full client list is generated. This will
  * override any previous arguments with the same parameter key name.
+ * @param argument custom arg to insert
  */
-void LaunchConfig::insertClientArgument(Argument argument)
+void LaunchConfig::insertClientArgument(const Argument &argument)
 {
   arguments_client.insert(argument.getKey(), argument);
 }
 
 /**
+ * Inserts a list of client arguments to be included when the full client list is generated. This
+ * will override any previous arguments with the same parameter key name.
+ * @param arguments custom args to insert
+ */
+void LaunchConfig::insertClientArguments(const QList<Argument> &arguments)
+{
+  for(auto const &argument : arguments)
+    insertClientArgument(argument);
+}
+
+/**
  * Insert a server argument to be included when the full server list is generated. This will
  * override any previous arguments with the same parameter key name.
+ * @param argument custom arg to insert
  */
-void LaunchConfig::insertServerArgument(Argument argument)
+void LaunchConfig::insertServerArgument(const Argument &argument)
 {
   arguments_server.insert(argument.getKey(), argument);
+}
+
+/**
+ * Inserts a list of server arguments to be included when the full server list is generated. This
+ * will override any previous arguments with the same parameter key name.
+ * @param arguments custom args to insert
+ */
+void LaunchConfig::insertServerArguments(const QList<Argument> &arguments)
+{
+  for(auto const &argument : arguments)
+    insertServerArgument(argument);
 }
 
 /**

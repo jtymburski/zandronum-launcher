@@ -21,9 +21,10 @@ QList<QString> JsonArgumentParser::parseStrings(QJsonArray json_array, QString a
   {
     if(element.type() == QVariant::Type::String)
       values.append(element.toString());
-    else
+    else if(element.isValid())
       qWarning() << "[WARNING] Key=" << array_key
-                 << "for the JSON array contains an element of unsupported type=" << element.type();
+                 << "for the JSON array contains an element of unsupported type ="
+                 << element.type();
   }
 
   return values;
@@ -45,9 +46,9 @@ QList<Argument> JsonArgumentParser::parseArguments(QJsonDocument json, QString p
   // Try to fetch the prefix at the top level object
   const QJsonObject json_object = json.object();
   const QJsonValue prefix_value = json_object.value(prefix_key);
-  if(!prefix_value.isObject())
-    qWarning() << "[WARNING] Prefix key=" << prefix_key
-               << " in JSON document is not an object and instead type=" << prefix_value.type();
+  if(!prefix_value.isObject() && !prefix_value.isUndefined())
+    qWarning() << "[WARNING] Prefix key =" << prefix_key
+               << " in JSON document is not an object and instead type =" << prefix_value.type();
 
   // Using the prefix object, try to assemble a list of arguments
   const QJsonObject prefix_object = prefix_value.toObject();
@@ -69,8 +70,8 @@ QList<Argument> JsonArgumentParser::parseArguments(QJsonDocument json, QString p
           arguments.append(Argument(key, parseStrings(value.toArray(), key)));
           break;
         default:
-          qWarning() << "[WARNING] Found key=" << key
-                     << " in JSON prefix object was unsupported type=" << value.type();
+          qWarning() << "[WARNING] Found key =" << key
+                     << " in JSON prefix object was unsupported type =" << value.type();
       }
   }
 
